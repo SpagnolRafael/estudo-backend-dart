@@ -4,12 +4,14 @@ import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 import '../models/news_model.dart';
 import '../services/service.dart';
+import 'api.dart';
 
-class Blog {
+class Blog extends Api {
   final Service _service;
   Blog(this._service);
 
-  Handler get handler {
+  @override
+  Handler getHandler({List<Middleware>? middlewares, bool isSecurity = false}) {
     Router router = Router();
 
     router.get('/blog/news', (Request request) async {
@@ -38,6 +40,7 @@ class Blog {
       return Response.ok('Deletado $id');
     });
 
-    return router;
+    return createHandler(
+        router: router, middlewares: middlewares, isSecurity: isSecurity);
   }
 }
